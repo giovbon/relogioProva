@@ -1,4 +1,4 @@
-# Relógio da Prova
+# Relógio da Prova!
 
 Página web escura com a **hora oficial de Brasília** (extraída de [horariodebrasilia.org](https://www.horariodebrasilia.org/)) e uma **contagem regressiva para o fim da prova**, com a cor mudando conforme o tempo restante.
 
