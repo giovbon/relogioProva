@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Relógio da Prova</title>
   <meta name="description" content="Hora oficial de Brasília e contagem regressiva para o fim da prova.">
-  <meta name="theme-color" content="#05070c">
+  <meta name="theme-color" content="#03050a">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2305070c'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%2334d399' stroke-width='4'/%3E%3Cpath d='M32 21v12l8 5' fill='none' stroke='%2334d399' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,22 +44,6 @@
         </button>
       </div>
     </header>
-
-    <section class="panel clock-panel" aria-label="Hora atual em Brasília">
-      <div class="clock-meta">
-        <span id="dateText">—</span>
-        <span class="tz"><span class="tz-dot" aria-hidden="true"></span> UTC−3 · Brasília</span>
-      </div>
-
-      <div class="clock" id="clock" role="timer" aria-live="off">--:--:--</div>
-
-      <div class="clock-foot">
-        <span id="sourceText">Fonte: horariodebrasilia.org</span>
-        <span id="captureText"></span>
-      </div>
-
-      <p class="warning" id="warning" hidden></p>
-    </section>
 
     <section class="panel timer-panel" aria-label="Contagem regressiva da prova">
       <div class="timer-empty" id="timerEmpty">
@@ -116,6 +100,24 @@
           </dl>
         </div>
       </div>
+    </section>
+
+    <section class="panel clock-panel" aria-label="Hora atual em Brasília">
+      <div class="clock-main">
+        <span class="clock-kicker">Hora oficial de Brasília</span>
+        <div class="clock-line">
+          <span class="clock" id="clock" role="timer" aria-live="off">--:--:--</span>
+          <span class="clock-date" id="dateText">—</span>
+        </div>
+      </div>
+
+      <div class="clock-side">
+        <span class="tz"><span class="tz-dot" aria-hidden="true"></span> UTC−3 · Brasília</span>
+        <span class="clock-source" id="sourceText">Fonte: horariodebrasilia.org</span>
+        <span class="clock-source" id="captureText"></span>
+      </div>
+
+      <p class="warning" id="warning" hidden></p>
     </section>
 
     <footer class="footnote">

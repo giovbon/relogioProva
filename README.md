@@ -6,7 +6,7 @@ Página web escura com a **hora oficial de Brasília** (extraída de [horariodeb
 
 ## O que a página faz
 
-- Exibe **data e hora de Brasília** (UTC−3), sincronizadas com o horariodebrasilia.org.
+- Exibe **data e hora de Brasília** (UTC−3), sincronizadas com o horariodebrasilia.org, em uma **faixa compacta no rodapé** — o destaque da tela é a contagem regressiva.
 - **Configurações em um modal**, abertas pela engrenagem no topo:
   - **início** e **fim** da prova;
   - **permanência mínima** em minutos (`0` libera a entrega desde o início);
@@ -27,6 +27,7 @@ Página web escura com a **hora oficial de Brasília** (extraída de [horariodeb
 - A prova pode atravessar a meia-noite. Se a janela configurada já passou no dia, ela é considerada para o dia seguinte (o resumo mostra "amanhã").
 - Horários e permanência ficam salvos no navegador (`localStorage`); nenhum dado é enviado a servidores.
 - Funciona bem no celular e respeita `prefers-reduced-motion`.
+- **Alto contraste para projetores**: fundo quase preto, textos claros e cores de estado mais saturadas, com a contagem regressiva em tamanho grande e legível à distância.
 
 ## Como o aviso de entrega é calculado
 

@@ -3,11 +3,11 @@
    ============================================================ */
 
 :root {
-  --bg: #05070c;
-  --text: #eef2f9;
-  --muted: #8b98b0;
-  --line: rgba(255, 255, 255, 0.08);
-  --accent-rgb: 122, 162, 255;
+  --bg: #03050a;
+  --text: #ffffff;
+  --muted: #b6c3d8;
+  --line: rgba(255, 255, 255, 0.14);
+  --accent-rgb: 147, 181, 255;
   --radius: 26px;
   --font-sans: 'Sora', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -43,12 +43,12 @@ body {
 }
 
 /* Cores por estado (definidas no <body> pelo JS) */
-body.state-idle   { --accent-rgb: 122, 162, 255; }
-body.state-soon   { --accent-rgb: 122, 162, 255; }
-body.state-ok     { --accent-rgb: 52, 211, 153; }
-body.state-warn   { --accent-rgb: 251, 191, 36; }
-body.state-danger { --accent-rgb: 248, 113, 113; }
-body.state-done   { --accent-rgb: 248, 113, 113; }
+body.state-idle   { --accent-rgb: 147, 181, 255; }
+body.state-soon   { --accent-rgb: 147, 181, 255; }
+body.state-ok     { --accent-rgb: 74, 222, 160; }
+body.state-warn   { --accent-rgb: 253, 204, 67; }
+body.state-danger { --accent-rgb: 255, 138, 138; }
+body.state-done   { --accent-rgb: 255, 138, 138; }
 
 body.modal-open {
   overflow: hidden;
@@ -378,11 +378,9 @@ body.modal-open {
   position: relative;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: linear-gradient(165deg, rgba(24, 30, 43, 0.8), rgba(9, 12, 19, 0.9));
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  backdrop-filter: blur(20px) saturate(130%);
+  background: linear-gradient(165deg, rgba(19, 25, 37, 0.97), rgba(6, 9, 15, 0.99));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 30px 80px -50px rgba(0, 0, 0, 0.95);
   transition: border-color 0.8s ease, box-shadow 0.8s ease;
   animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -412,28 +410,68 @@ body.state-ok .panel,
 body.state-warn .panel,
 body.state-danger .panel,
 body.state-done .panel {
-  border-color: rgba(var(--accent-rgb), 0.16);
+  border-color: rgba(var(--accent-rgb), 0.35);
 }
 
-/* ---------- relógio ---------- */
+/* ---------- relógio compacto (rodapé) ---------- */
 
 .clock-panel {
-  padding: clamp(20px, 4vw, 30px) clamp(20px, 5vw, 40px) clamp(16px, 3vw, 22px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 24px;
+  padding: 14px clamp(16px, 4vw, 24px);
+  border-radius: 18px;
+  background: rgba(9, 13, 21, 0.94);
 }
 
-.clock-meta {
+.clock-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.clock-kicker {
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb0c9;
+}
+
+.clock-line {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 14px;
-  font-size: 0.8rem;
-  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  min-width: 0;
 }
 
-#dateText {
-  color: #c7d1e4;
+.clock {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.clock-date {
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
   font-weight: 500;
+  color: #c9d5e8;
   letter-spacing: 0.01em;
+}
+
+.clock-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  text-align: right;
 }
 
 .tz {
@@ -441,72 +479,63 @@ body.state-done .panel {
   align-items: center;
   gap: 7px;
   flex: none;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
+  font-weight: 600;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #8a97ad;
+  color: #9fb0c9;
 }
 
 .tz-dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: rgb(var(--accent-rgb));
-  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.9);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.95);
   transition: background-color 0.8s ease, box-shadow 0.8s ease;
 }
 
-.clock {
-  margin: clamp(12px, 3vw, 20px) 0 clamp(8px, 2vw, 12px);
-  font-family: var(--font-mono);
-  font-size: clamp(3.2rem, 14vw, 6.4rem);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.035em;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-  background: linear-gradient(180deg, #ffffff 18%, rgba(var(--accent-rgb), 0.86) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 16px 44px rgba(var(--accent-rgb), 0.2));
-  transition: filter 0.8s ease;
-  user-select: none;
-}
-
-.clock-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.68rem;
+.clock-source {
+  font-size: 0.66rem;
   letter-spacing: 0.01em;
-  color: #7c8aa2;
-}
-
-#captureText {
-  text-align: right;
+  color: #94a4bd;
 }
 
 .warning {
   margin: 14px 0 0;
-  padding: 10px 13px;
+  padding: 11px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(251, 191, 36, 0.25);
-  background: rgba(251, 191, 36, 0.07);
-  color: #fcd34d;
-  font-size: 0.76rem;
+  border: 1px solid rgba(253, 204, 67, 0.45);
+  background: rgba(253, 204, 67, 0.12);
+  color: #ffe08a;
+  font-size: 0.82rem;
+  font-weight: 500;
   line-height: 1.5;
   text-align: left;
+}
+
+.clock-panel .warning {
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
 }
 
 /* ---------- formulário ---------- */
 
 .timer-panel {
-  padding: clamp(20px, 4vw, 30px) clamp(20px, 5vw, 40px) clamp(22px, 4vw, 30px);
+  padding: clamp(24px, 4vw, 34px) clamp(20px, 5vw, 40px) clamp(26px, 4vw, 34px);
+  border-color: rgba(var(--accent-rgb), 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(var(--accent-rgb), 0.1),
+    0 40px 110px -60px rgba(0, 0, 0, 1),
+    0 0 110px -60px rgba(var(--accent-rgb), 0.85);
+}
+
+.timer-panel::before {
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.85), transparent);
 }
 
 /* ---------- estado vazio ---------- */
@@ -584,30 +613,30 @@ body.state-done .panel {
 }
 
 .exam-item small {
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7c8aa2;
+  color: #9fb0c9;
 }
 
 .exam-item strong {
   font-family: var(--font-mono);
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: #e3eaf6;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #ffffff;
   font-variant-numeric: tabular-nums;
 }
 
 .exam-arrow {
-  color: #5c6a82;
-  font-size: 0.9rem;
+  color: #93a2ba;
+  font-size: 0.95rem;
 }
 
 .exam-note {
   margin: 10px 0 0;
-  font-size: 0.72rem;
-  color: #7c8aa2;
+  font-size: 0.82rem;
+  color: #9fb0c9;
 }
 
 .fields {
@@ -635,8 +664,8 @@ body.state-done .panel {
   height: 58px;
   padding: 0 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 1.25rem;
@@ -738,14 +767,14 @@ body.state-done .panel {
 .status {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
+  gap: 9px;
+  padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(var(--accent-rgb), 0.22);
-  background: rgba(var(--accent-rgb), 0.09);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  background: rgba(var(--accent-rgb), 0.14);
   color: rgb(var(--accent-rgb));
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   transition: color 0.7s ease, background-color 0.7s ease, border-color 0.7s ease;
@@ -753,8 +782,8 @@ body.state-done .panel {
 
 .status::before {
   content: '';
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: currentColor;
   box-shadow: 0 0 8px currentColor;
@@ -766,15 +795,15 @@ body.state-done .status::before {
 }
 
 .remaining {
-  margin-top: 18px;
+  margin-top: 20px;
   font-family: var(--font-mono);
-  font-size: clamp(2.6rem, 10vw, 4.6rem);
+  font-size: clamp(3.4rem, 12vw, 6.8rem);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   font-variant-numeric: tabular-nums;
   color: rgb(var(--accent-rgb));
-  filter: drop-shadow(0 0 34px rgba(var(--accent-rgb), 0.26));
+  filter: drop-shadow(0 0 26px rgba(var(--accent-rgb), 0.22));
   transition: color 0.7s ease, filter 0.7s ease;
   user-select: none;
 }
@@ -786,13 +815,14 @@ body.state-done .remaining {
 
 @keyframes breathe {
   0%, 100% { opacity: 1; }
-  50%      { opacity: 0.68; }
+  50%      { opacity: 0.8; }
 }
 
 .remaining-label {
   margin-top: 10px;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 1.08rem;
+  font-weight: 500;
 }
 
 /* ---------- aviso de entrega ---------- */
@@ -800,12 +830,12 @@ body.state-done .remaining {
 .gate {
   display: flex;
   align-items: center;
-  gap: 13px;
-  margin-top: 22px;
-  padding: 14px 16px;
-  border-radius: 16px;
+  gap: 16px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border-radius: 18px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.05);
   text-align: left;
   transition: border-color 0.35s ease, background-color 0.35s ease, color 0.35s ease;
 }
@@ -814,17 +844,17 @@ body.state-done .remaining {
   display: grid;
   place-items: center;
   flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   border: 1px solid currentColor;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .gate-ico {
   display: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
@@ -835,45 +865,45 @@ body.state-done .remaining {
 .gate-text {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
 }
 
 .gate-text strong {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1.08rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .gate-text span {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   line-height: 1.45;
   color: var(--muted);
 }
 
 .gate[data-state="idle"],
 .gate[data-state="waiting"] {
-  color: #9dbaff;
-  border-color: rgba(122, 162, 255, 0.24);
-  background: rgba(122, 162, 255, 0.06);
+  color: #b9ceff;
+  border-color: rgba(147, 181, 255, 0.5);
+  background: rgba(147, 181, 255, 0.12);
 }
 
 .gate[data-state="locked"] {
-  color: #fbbf24;
-  border-color: rgba(251, 191, 36, 0.28);
-  background: rgba(251, 191, 36, 0.07);
+  color: #ffd970;
+  border-color: rgba(253, 204, 67, 0.5);
+  background: rgba(253, 204, 67, 0.12);
 }
 
 .gate[data-state="released"] {
-  color: #34d399;
-  border-color: rgba(52, 211, 153, 0.3);
-  background: rgba(52, 211, 153, 0.08);
+  color: #5eebb2;
+  border-color: rgba(74, 222, 160, 0.55);
+  background: rgba(74, 222, 160, 0.14);
 }
 
 .gate[data-state="done"] {
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.25);
-  background: rgba(248, 113, 113, 0.07);
+  color: #ff9b9b;
+  border-color: rgba(255, 138, 138, 0.5);
+  background: rgba(255, 138, 138, 0.12);
 }
 
 .gate[data-state="idle"] .gate-ico-clock,
@@ -886,28 +916,28 @@ body.state-done .remaining {
 
 .gate[data-state="idle"] .gate-text span,
 .gate[data-state="waiting"] .gate-text span {
-  color: #9aa9c6;
+  color: #c3d2ee;
 }
 
 .gate[data-state="locked"] .gate-text span {
-  color: #d8b45c;
+  color: #ffe1a1;
 }
 
 .gate[data-state="released"] .gate-text span {
-  color: #9fe3c4;
+  color: #b6f2d6;
 }
 
 .gate[data-state="done"] .gate-text span {
-  color: #e3a1a1;
+  color: #ffc4c4;
 }
 
 .progress {
   position: relative;
-  height: 10px;
-  margin-top: 26px;
+  height: 14px;
+  margin-top: 28px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 
@@ -933,19 +963,19 @@ body.state-done .remaining {
   display: flex;
   justify-content: space-between;
   margin-top: 8px;
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: #7c8aa2;
+  color: #9fb0c9;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin: 24px 0 0;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 26px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .stats > div {
@@ -953,22 +983,23 @@ body.state-done .remaining {
 }
 
 .stats > div + div {
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stats dt {
-  font-size: 0.62rem;
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7c8aa2;
+  color: #9fb0c9;
 }
 
 .stats dd {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
   font-family: var(--font-mono);
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: #d7e0ee;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1008,10 +1039,10 @@ body.state-done .remaining {
   max-height: calc(100dvh - 24px);
   padding: clamp(18px, 3vw, 24px);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(165deg, rgba(23, 29, 42, 0.99), rgba(8, 11, 18, 0.99));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(165deg, rgba(23, 29, 42, 0.99), rgba(5, 8, 14, 0.99));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 44px 110px -34px rgba(0, 0, 0, 0.98);
 }
 
@@ -1102,9 +1133,9 @@ body.state-done .remaining {
 .footnote {
   padding: 4px 8px 6px;
   text-align: center;
-  font-size: 0.69rem;
+  font-size: 0.76rem;
   line-height: 1.7;
-  color: #7e8ba1;
+  color: #9fadc2;
 }
 
 .footnote p {
@@ -1161,6 +1192,105 @@ body.state-done .remaining {
   text-align: center;
 }
 
+/* ---------- telas baixas (projetores 720p e notebooks) ---------- */
+
+@media (max-height: 780px) {
+  body {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .shell {
+    gap: 10px;
+  }
+
+  .topbar {
+    padding: 0 4px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+
+  .brand-mark svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .timer-panel {
+    padding: 18px clamp(18px, 4vw, 32px) 20px;
+  }
+
+  .divider {
+    margin: 14px 0;
+  }
+
+  .status {
+    padding: 6px 13px;
+    font-size: 0.72rem;
+  }
+
+  .remaining {
+    margin-top: 12px;
+    font-size: clamp(2.7rem, 10vh, 5.6rem);
+  }
+
+  .remaining-label {
+    margin-top: 6px;
+    font-size: 0.95rem;
+  }
+
+  .gate {
+    margin-top: 14px;
+    padding: 12px 15px;
+  }
+
+  .gate-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .gate-ico {
+    width: 20px;
+    height: 20px;
+  }
+
+  .gate-text strong {
+    font-size: 0.98rem;
+  }
+
+  .gate-text span {
+    font-size: 0.82rem;
+  }
+
+  .progress {
+    margin-top: 16px;
+    height: 12px;
+  }
+
+  .stats {
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+
+  .stats dd {
+    margin-top: 5px;
+    font-size: 1rem;
+  }
+
+  .clock-panel {
+    padding: 10px clamp(14px, 4vw, 20px);
+  }
+
+  .footnote {
+    padding: 2px 8px 0;
+    font-size: 0.7rem;
+  }
+}
+
 /* ---------- responsivo ---------- */
 
 @media (max-width: 560px) {
@@ -1168,20 +1298,18 @@ body.state-done .remaining {
     grid-template-columns: 1fr;
   }
 
-  .clock-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+  .clock-panel {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .clock-foot {
-    flex-direction: column;
+  .clock-side {
     align-items: flex-start;
-    gap: 2px;
-  }
-
-  #captureText {
     text-align: left;
+  }
+
+  .clock-source:empty {
+    display: none;
   }
 
   .badge {
@@ -1198,7 +1326,7 @@ body.state-done .remaining {
   }
 
   .stats dd {
-    font-size: 0.86rem;
+    font-size: 0.95rem;
   }
 
   .chip-ghost {
@@ -1215,12 +1343,13 @@ body.state-done .remaining {
   }
 
   .gate {
-    padding: 12px 13px;
+    padding: 14px;
+    gap: 13px;
   }
 
   .gate-icon {
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
   }
 
   .modal {
