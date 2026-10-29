@@ -1,0 +1,14 @@
+{
+  "name": "relogio-da-prova",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hora oficial de Brasília e contagem regressiva para o fim da prova.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "sync": "node scripts/sync-time.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

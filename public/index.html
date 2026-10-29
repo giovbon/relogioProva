@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relógio da Prova</title>
+  <meta name="description" content="Hora oficial de Brasília e contagem regressiva para o fim da prova.">
+  <meta name="theme-color" content="#05070c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2305070c'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%2334d399' stroke-width='4'/%3E%3Cpath d='M32 21v12l8 5' fill='none' stroke='%2334d399' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="state-idle">
+  <div class="backdrop" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="grid"></span>
+  </div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3.2 1.9"></path></svg>
+        </span>
+        <div class="brand-text">
+          <strong>Relógio da Prova</strong>
+          <span>Hora oficial de Brasília</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="badge is-syncing" id="syncBadge" title="Obtendo a hora oficial…">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="syncText">sincronizando…</span>
+        </div>
+        <button type="button" class="icon-btn" id="openSettingsBtn" aria-label="Configurações da prova" title="Configurações da prova">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="panel clock-panel" aria-label="Hora atual em Brasília">
+      <div class="clock-meta">
+        <span id="dateText">—</span>
+        <span class="tz"><span class="tz-dot" aria-hidden="true"></span> UTC−3 · Brasília</span>
+      </div>
+
+      <div class="clock" id="clock" role="timer" aria-live="off">--:--:--</div>
+
+      <div class="clock-foot">
+        <span id="sourceText">Fonte: horariodebrasilia.org</span>
+        <span id="captureText"></span>
+      </div>
+
+      <p class="warning" id="warning" hidden></p>
+    </section>
+
+    <section class="panel timer-panel" aria-label="Contagem regressiva da prova">
+      <div class="timer-empty" id="timerEmpty">
+        <span class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3.2 1.9"></path></svg>
+        </span>
+        <h2>Nenhuma prova configurada</h2>
+        <p>Defina o início, o fim e a permanência mínima para acompanhar o tempo e saber quando já pode entregar.</p>
+        <button type="button" class="btn btn-primary" data-open-settings>Configurar prova</button>
+      </div>
+
+      <div id="timerContent" hidden>
+        <div class="exam-bar">
+          <div class="exam-times">
+            <span class="exam-item"><small>Início</small><strong id="summaryStart">—</strong></span>
+            <span class="exam-arrow" aria-hidden="true">→</span>
+            <span class="exam-item"><small>Fim</small><strong id="summaryEnd">—</strong></span>
+            <span class="exam-item"><small>Permanência mín.</small><strong id="summaryMin">—</strong></span>
+          </div>
+          <button type="button" class="mini-btn" data-open-settings>Editar</button>
+        </div>
+        <p class="exam-note" id="summaryWhen" hidden></p>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="countdown">
+          <span class="status" id="statusPill" aria-live="polite">Aguardando horários</span>
+          <div class="remaining" id="remaining" role="timer" aria-live="off">--:--:--</div>
+          <div class="remaining-label" id="remainingLabel">Informe o início e o fim da prova</div>
+
+          <div class="gate" id="gate" data-state="idle">
+            <span class="gate-icon" aria-hidden="true">
+              <svg class="gate-ico gate-ico-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2.5"></rect><path d="M8 10V7.5a4 4 0 0 1 8 0V10"></path></svg>
+              <svg class="gate-ico gate-ico-unlock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2.5"></rect><path d="M8 10V7.5a4 4 0 0 1 7.7-1.5"></path></svg>
+              <svg class="gate-ico gate-ico-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3.2 1.9"></path></svg>
+            </span>
+            <div class="gate-text">
+              <strong id="gateTitle" aria-live="polite">Configure a prova</strong>
+              <span id="gateDetail">Defina os horários nas configurações.</span>
+            </div>
+          </div>
+
+          <div class="progress" id="progress" role="progressbar" aria-label="Tempo decorrido da prova" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="tick" style="left:50%" aria-hidden="true"></span>
+            <span class="tick" style="left:80%" aria-hidden="true"></span>
+          </div>
+          <div class="progress-legend"><span>início</span><span>fim</span></div>
+
+          <dl class="stats">
+            <div><dt>Duração</dt><dd id="durationText">—</dd></div>
+            <div><dt>Decorrido</dt><dd id="elapsedText">—</dd></div>
+            <div><dt>Restante</dt><dd id="pctText">—</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footnote">
+      <p>Hora extraída de <a href="https://www.horariodebrasilia.org/" target="_blank" rel="noopener noreferrer">horariodebrasilia.org</a> · UTC−3 · precisão de ~1s.</p>
+      <p class="legend">
+        <span>Tempo restante:</span>
+        <span><i class="sw sw-green"></i> acima de 50%</span>
+        <span><i class="sw sw-yellow"></i> 50% a 20%</span>
+        <span><i class="sw sw-red"></i> abaixo de 20%</span>
+      </p>
+    </footer>
+  </main>
+
+  <dialog class="modal" id="settingsDialog" aria-labelledby="settingsTitle">
+    <form class="modal-card" id="settingsForm" novalidate>
+      <header class="modal-head">
+        <div>
+          <h2 id="settingsTitle">Configurações da prova</h2>
+          <p>Horários no fuso de Brasília (UTC−3).</p>
+        </div>
+        <button type="button" class="icon-btn" id="closeSettings" aria-label="Fechar configurações">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="fields">
+          <label class="field" for="startInput">
+            <span>Início da prova</span>
+            <input id="startInput" type="time" step="60" autocomplete="off">
+          </label>
+          <label class="field" for="endInput">
+            <span>Fim da prova</span>
+            <input id="endInput" type="time" step="60" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="presets">
+          <span class="presets-label">Atalhos</span>
+          <button type="button" class="chip" data-minutes="60" title="Define início agora e fim daqui a 1 hora">1h</button>
+          <button type="button" class="chip" data-minutes="120" title="Define início agora e fim daqui a 2 horas">2h</button>
+          <button type="button" class="chip" data-minutes="180" title="Define início agora e fim daqui a 3 horas">3h</button>
+          <button type="button" class="chip" data-minutes="240" title="Define início agora e fim daqui a 4 horas">4h</button>
+        </div>
+
+        <label class="field" for="minStayInput">
+          <span>Permanência mínima (minutos)</span>
+          <input id="minStayInput" type="number" inputmode="numeric" min="0" max="1440" step="1" placeholder="0" autocomplete="off" aria-describedby="minStayHint">
+        </label>
+
+        <p class="hint" id="minStayHint">Tempo mínimo, contado a partir do início, para o aluno poder entregar a prova. Use <strong>0</strong> para liberar desde o início.</p>
+        <p class="preview" id="settingsPreview">—</p>
+        <p class="form-error" id="settingsError" hidden></p>
+      </div>
+
+      <footer class="modal-foot">
+        <button type="button" class="chip chip-ghost" id="clearSettings">Limpar</button>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelSettings">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p class="noscript">Ative o JavaScript para ver o relógio e a contagem regressiva.</p>
+  </noscript>
+
+  <script src="app.js"></script>
+</body>
+</html>
